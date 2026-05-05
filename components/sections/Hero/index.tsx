@@ -97,18 +97,18 @@ export function Hero() {
               {firstName.split('').map((char, i) => (
                 <span
                   key={i}
-                  className="hero-letter inline-block font-display text-[clamp(3.5rem,12vw,11rem)] font-black tracking-[-0.03em] text-foreground"
+                  className="hero-letter inline-block font-display text-[clamp(3.5rem,12vw,11rem)] font-semibold tracking-[-0.02em] text-foreground"
                 >
                   {char}
                 </span>
               ))}
             </div>
-            <span className="hero-letter inline-block w-[0.5em]" aria-hidden="true" />
+            <span className="hero-letter inline-block w-[0.8em]" aria-hidden="true" />
             <div className="flex overflow-visible">
               {lastName.split('').map((char, i) => (
                 <span
                   key={i}
-                  className={`hero-letter inline-block font-display text-[clamp(3.5rem,12vw,11rem)] font-black tracking-[-0.03em] ${
+                  className={`hero-letter inline-block font-display text-[clamp(3.5rem,12vw,11rem)] font-semibold tracking-[-0.02em] ${
                     i === lastName.length - 1 ? 'text-accent' : 'text-foreground'
                   }`}
                 >

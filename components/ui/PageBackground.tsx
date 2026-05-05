@@ -4,14 +4,14 @@ import { useEffect, useRef } from 'react'
 
 // Each orb: position as fraction of total page height, parallax speed, drift params
 const ORBS = [
-  { xFrac: 0.15, yFrac: 0.05, r: 420, speed: 0.00011, phase: 0.0, parallax: 0.25, a: 0.08 },
-  { xFrac: 0.82, yFrac: 0.15, r: 340, speed: 0.00009, phase: 2.1, parallax: 0.45, a: 0.06 },
-  { xFrac: 0.55, yFrac: 0.28, r: 460, speed: 0.00013, phase: 1.0, parallax: 0.35, a: 0.07 },
-  { xFrac: 0.08, yFrac: 0.45, r: 380, speed: 0.0001, phase: 3.5, parallax: 0.55, a: 0.05 },
-  { xFrac: 0.92, yFrac: 0.52, r: 310, speed: 0.00012, phase: 0.8, parallax: 0.3, a: 0.06 },
-  { xFrac: 0.38, yFrac: 0.65, r: 440, speed: 0.00008, phase: 4.2, parallax: 0.42, a: 0.07 },
-  { xFrac: 0.72, yFrac: 0.78, r: 350, speed: 0.00014, phase: 2.8, parallax: 0.5, a: 0.05 },
-  { xFrac: 0.22, yFrac: 0.92, r: 390, speed: 0.00011, phase: 1.7, parallax: 0.38, a: 0.06 },
+  { xFrac: 0.15, yFrac: 0.05, r: 460, speed: 0.00011, phase: 0.0, parallax: 0.25, a: 0.13 },
+  { xFrac: 0.82, yFrac: 0.15, r: 380, speed: 0.00009, phase: 2.1, parallax: 0.45, a: 0.1 },
+  { xFrac: 0.55, yFrac: 0.28, r: 500, speed: 0.00013, phase: 1.0, parallax: 0.35, a: 0.11 },
+  { xFrac: 0.08, yFrac: 0.45, r: 420, speed: 0.0001, phase: 3.5, parallax: 0.55, a: 0.09 },
+  { xFrac: 0.92, yFrac: 0.52, r: 350, speed: 0.00012, phase: 0.8, parallax: 0.3, a: 0.1 },
+  { xFrac: 0.38, yFrac: 0.65, r: 480, speed: 0.00008, phase: 4.2, parallax: 0.42, a: 0.11 },
+  { xFrac: 0.72, yFrac: 0.78, r: 390, speed: 0.00014, phase: 2.8, parallax: 0.5, a: 0.09 },
+  { xFrac: 0.22, yFrac: 0.92, r: 430, speed: 0.00011, phase: 1.7, parallax: 0.38, a: 0.1 },
 ]
 
 export function PageBackground() {
