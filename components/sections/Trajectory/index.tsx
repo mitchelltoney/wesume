@@ -193,7 +193,7 @@ export function Trajectory() {
                 ref={pathRef}
                 d="M 20 0 C 20 100, 20 200, 20 300 C 20 400, 20 500, 20 600"
                 fill="none"
-                stroke="oklch(0.84 0.22 142)"
+                stroke="oklch(0.72 0.19 225)"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />
@@ -205,8 +205,8 @@ export function Trajectory() {
                   r="4"
                   fill={
                     reducedMotion || activeIdx >= i
-                      ? 'oklch(0.84 0.22 142)'
-                      : 'oklch(0.84 0.22 142 / 0.2)'
+                      ? 'oklch(0.72 0.19 225)'
+                      : 'oklch(0.72 0.19 225 / 0.2)'
                   }
                   className="transition-all duration-500"
                 />

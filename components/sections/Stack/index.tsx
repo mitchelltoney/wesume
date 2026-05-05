@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react'
 import { techStack, domainLabels, type TechDomain } from '@/lib/data'
 
 const DOMAIN_COLORS: Record<TechDomain, string> = {
-  systems: 'oklch(0.84 0.22 142)',
-  ml: 'oklch(0.78 0.18 250)',
-  data: 'oklch(0.82 0.15 60)',
-  bio: 'oklch(0.8 0.18 320)',
-  general: 'oklch(0.7 0.05 0)',
+  systems: 'oklch(0.72 0.19 225)',
+  ml: 'oklch(0.72 0.18 270)',
+  data: 'oklch(0.78 0.15 195)',
+  bio: 'oklch(0.72 0.16 200)',
+  general: 'oklch(0.65 0.08 230)',
 }
 
 const POSITIONS: Record<TechDomain, { cx: number; cy: number }> = {
@@ -141,7 +141,7 @@ export function Stack() {
                       y1={na.y}
                       x2={nb.x}
                       y2={nb.y}
-                      stroke="oklch(0.84 0.22 142)"
+                      stroke="oklch(0.72 0.19 225)"
                       strokeWidth="0.3"
                       opacity={getEdgeOpacity([a, b])}
                       style={{ transition: 'opacity 0.3s' }}
@@ -157,7 +157,7 @@ export function Stack() {
                     y={POSITIONS[domain].cy - 14}
                     textAnchor="middle"
                     fontSize="2.5"
-                    fill="oklch(0.84 0.22 142)"
+                    fill="oklch(0.72 0.19 225)"
                     opacity={!hoveredDomain || hoveredDomain === domain ? 0.6 : 0.1}
                     style={{
                       transition: 'opacity 0.3s',

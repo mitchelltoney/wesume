@@ -1,8 +1,11 @@
 'use client'
 
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useEffect, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+
+// Light blue accent — matches CSS --color-accent oklch(0.72 0.19 225)
+const ACCENT_HEX = '#60a5fa'
 
 interface ShapeProps {
   position: [number, number, number]
@@ -13,7 +16,6 @@ interface ShapeProps {
   depth: number
 }
 
-// Individual wireframe geometry — icosahedra and octahedra
 function FloatingShape({ position, rotation, scale, speed, scrollRef, depth }: ShapeProps) {
   const meshRef = useRef<THREE.Mesh>(null)
   const geo = useMemo(
@@ -27,31 +29,23 @@ function FloatingShape({ position, rotation, scale, speed, scrollRef, depth }: S
     const scroll = scrollRef.current ?? 0
     meshRef.current.rotation.x += delta * speed * 0.4
     meshRef.current.rotation.y += delta * speed * 0.6
-    // Parallax: shapes further back (negative z) move less
     meshRef.current.position.y = position[1] - scroll * depth * 1.2
-    // Fade out on scroll
     const mat = meshRef.current.material as THREE.MeshBasicMaterial
-    mat.opacity = Math.max(0, 0.12 - scroll * 0.18)
+    mat.opacity = Math.max(0, 0.14 - scroll * 0.2)
   })
 
   return (
     <mesh ref={meshRef} position={position} rotation={rotation} scale={scale}>
       <primitive object={geo} />
-      <meshBasicMaterial
-        color={new THREE.Color().setStyle('oklch(0.84 0.22 142)')}
-        wireframe
-        transparent
-        opacity={0.12}
-      />
+      <meshBasicMaterial color={ACCENT_HEX} wireframe transparent opacity={0.14} />
     </mesh>
   )
 }
 
-// Pre-computed outside component — stable, no re-render impurity
+// Deterministic positions — no Math.random() during render
 const PARTICLE_POSITIONS = (() => {
   const count = 180
   const pos = new Float32Array(count * 3)
-  // Use a seeded-ish deterministic spread instead of Math.random
   for (let i = 0; i < count; i++) {
     const t = (i / count) * Math.PI * 2 * 17.3
     const u = (i / count) * Math.PI * 2 * 7.9
@@ -62,7 +56,6 @@ const PARTICLE_POSITIONS = (() => {
   return pos
 })()
 
-// Particle field — small dots scattered in depth
 function ParticleField({ scrollRef }: { scrollRef: React.RefObject<number> }) {
   const pointsRef = useRef<THREE.Points>(null)
 
@@ -72,7 +65,7 @@ function ParticleField({ scrollRef }: { scrollRef: React.RefObject<number> }) {
     pointsRef.current.rotation.y += delta * 0.02
     pointsRef.current.position.y = -scroll * 0.8
     const mat = pointsRef.current.material as THREE.PointsMaterial
-    mat.opacity = Math.max(0, 0.25 - scroll * 0.3)
+    mat.opacity = Math.max(0, 0.28 - scroll * 0.35)
   })
 
   return (
@@ -80,13 +73,7 @@ function ParticleField({ scrollRef }: { scrollRef: React.RefObject<number> }) {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[PARTICLE_POSITIONS, 3]} />
       </bufferGeometry>
-      <pointsMaterial
-        color={new THREE.Color().setStyle('oklch(0.84 0.22 142)')}
-        size={0.04}
-        transparent
-        opacity={0.25}
-        sizeAttenuation
-      />
+      <pointsMaterial color={ACCENT_HEX} size={0.04} transparent opacity={0.28} sizeAttenuation />
     </points>
   )
 }
@@ -117,15 +104,26 @@ interface HeroCanvasProps {
   scrollRef: React.RefObject<number>
 }
 
+// SSR-safe: renders a stable placeholder div on both server and initial client render.
+// The Canvas only mounts after hydration — no Suspense wrapper, no tree mismatch.
 export function HeroCanvas({ scrollRef }: HeroCanvasProps) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    queueMicrotask(() => setMounted(true))
+  }, [])
+
   return (
-    <Canvas
-      camera={{ position: [0, 0, 8], fov: 60 }}
-      gl={{ antialias: true, alpha: true }}
-      style={{ position: 'absolute', inset: 0 }}
-      aria-hidden="true"
-    >
-      <Scene scrollRef={scrollRef} />
-    </Canvas>
+    <div className="absolute inset-0" aria-hidden="true">
+      {mounted && (
+        <Canvas
+          camera={{ position: [0, 0, 8], fov: 60 }}
+          gl={{ antialias: true, alpha: true }}
+          style={{ width: '100%', height: '100%' }}
+        >
+          <Scene scrollRef={scrollRef} />
+        </Canvas>
+      )}
+    </div>
   )
 }

@@ -45,7 +45,7 @@ function VisualState({ state }: { state: string }) {
           <div className="absolute inset-4 rounded-full border border-accent/30" />
           <div className="absolute inset-8 rounded-full border border-accent/50" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_oklch(0.84_0.22_142)]" />
+            <div className="h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_oklch(0.72_0.19_225)]" />
           </div>
         </div>
         <div className="font-display text-xl font-bold text-foreground">Orange County</div>
@@ -61,7 +61,7 @@ function VisualState({ state }: { state: string }) {
             <div
               key={i}
               className="h-3 w-3 rounded-sm"
-              style={{ backgroundColor: `oklch(0.84 0.22 142 / ${NOKIA_GRID[i]})` }}
+              style={{ backgroundColor: `oklch(0.72 0.19 225 / ${NOKIA_GRID[i]})` }}
             />
           ))}
         </div>
@@ -78,13 +78,13 @@ function VisualState({ state }: { state: string }) {
           <polyline
             points="50,10 90,90 10,90"
             fill="none"
-            stroke="oklch(0.84 0.22 142)"
+            stroke="oklch(0.72 0.19 225)"
             strokeWidth="2"
             strokeLinejoin="round"
           />
-          <circle cx="50" cy="10" r="3" fill="oklch(0.84 0.22 142)" />
-          <circle cx="90" cy="90" r="3" fill="oklch(0.84 0.22 142 / 0.4)" />
-          <circle cx="10" cy="90" r="3" fill="oklch(0.84 0.22 142 / 0.4)" />
+          <circle cx="50" cy="10" r="3" fill="oklch(0.72 0.19 225)" />
+          <circle cx="90" cy="90" r="3" fill="oklch(0.72 0.19 225 / 0.4)" />
+          <circle cx="10" cy="90" r="3" fill="oklch(0.72 0.19 225 / 0.4)" />
         </svg>
       </div>
       <div className="font-display text-xl font-bold text-foreground">UC San Diego</div>
@@ -184,7 +184,7 @@ export function Premise() {
               key={i}
               className="h-1 w-1 rounded-full transition-all duration-300"
               style={{
-                backgroundColor: i === activeState ? 'oklch(0.84 0.22 142)' : 'oklch(1 0 0 / 0.2)',
+                backgroundColor: i === activeState ? 'oklch(0.72 0.19 225)' : 'oklch(1 0 0 / 0.2)',
                 transform: i === activeState ? 'scale(1.6)' : 'scale(1)',
               }}
             />

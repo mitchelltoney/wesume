@@ -1,17 +1,13 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import dynamic from 'next/dynamic'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { siteData } from '@/lib/data'
+// Direct import — HeroCanvas is SSR-safe (renders stable placeholder until mounted)
+import { HeroCanvas } from './HeroCanvas'
 
 gsap.registerPlugin(ScrollTrigger)
-
-// Code-split: 3D bundle only loads once the hero is mounted
-const HeroCanvas = dynamic(() => import('./HeroCanvas').then((m) => ({ default: m.HeroCanvas })), {
-  ssr: false,
-})
 
 const [firstName, lastName] = siteData.name.split(' ')
 

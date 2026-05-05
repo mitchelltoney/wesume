@@ -93,7 +93,7 @@ export function Coda() {
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage:
-            'radial-gradient(circle, oklch(0.84 0.22 142 / 0.12) 1px, transparent 1px)',
+            'radial-gradient(circle, oklch(0.72 0.19 225 / 0.12) 1px, transparent 1px)',
           backgroundSize: '32px 32px',
         }}
       />
