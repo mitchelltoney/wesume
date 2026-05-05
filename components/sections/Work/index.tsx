@@ -70,59 +70,72 @@ export function Work() {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced || window.innerWidth < 768) return
 
+    const section = sectionRef.current
+    const track = trackRef.current
+    if (!section || !track) return
+
+    // Measure scroll distance and set section tall enough to provide it
+    const measure = () => track.scrollWidth - window.innerWidth
+
+    let totalWidth = measure()
+    section.style.height = `calc(100vh + ${totalWidth}px)`
+
     const ctx = gsap.context(() => {
-      const track = trackRef.current
-      if (!track) return
-
-      const totalWidth = track.scrollWidth - window.innerWidth
-
       gsap.to(track, {
-        x: -totalWidth,
+        x: () => -measure(),
         ease: 'none',
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: section,
           start: 'top top',
-          end: () => `+=${totalWidth}`,
-          scrub: 1.2,
-          pin: true,
-          anticipatePin: 1,
+          end: 'bottom bottom',
+          scrub: 1,
+          // No pin — CSS sticky handles the lock, no JS position switch = no jump
+          invalidateOnRefresh: true,
         },
       })
     }, sectionRef)
 
-    return () => ctx.revert()
+    const onResize = () => {
+      totalWidth = measure()
+      section.style.height = `calc(100vh + ${totalWidth}px)`
+      ScrollTrigger.refresh()
+    }
+    window.addEventListener('resize', onResize, { passive: true })
+
+    return () => {
+      ctx.revert()
+      section.style.height = ''
+      window.removeEventListener('resize', onResize)
+    }
   }, [])
 
   return (
     <section id="work" ref={sectionRef} className="relative">
-      {/* Section header — visible before pin starts */}
-      <div className="relative z-10 px-6 pt-24 pb-12 md:px-16 lg:px-24">
-        <p className="mb-2 font-mono text-xs text-accent">selected work</p>
-        <h2 className="font-display text-[clamp(2.5rem,6vw,4rem)] font-bold text-foreground">
-          Projects
-        </h2>
-      </div>
+      {/*
+        CSS sticky viewport — locks to top of screen while the section scrolls.
+        No GSAP pin means no position:fixed switch, so entry/exit are seamless.
+      */}
+      <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
+        {/* Header */}
+        <div className="shrink-0 px-6 pt-16 pb-8 md:px-16 lg:px-24">
+          <p className="mb-2 font-mono text-xs text-accent">selected work</p>
+          <h2 className="font-display text-[clamp(2.5rem,6vw,4rem)] font-bold text-foreground">
+            Projects
+          </h2>
+        </div>
 
-      {/* Horizontal scroll track */}
-      <div ref={trackRef} className="flex gap-6 px-6 pb-24 md:px-16" aria-label="Project list">
-        {projects.map((project, i) => (
-          <ProjectCard key={project.id} project={project} index={i} />
-        ))}
-        {/* End spacer */}
-        <div className="w-[10vw] shrink-0" aria-hidden="true" />
+        {/* Horizontal track — GSAP drives x, overflow hidden clips it cleanly */}
+        <div
+          ref={trackRef}
+          className="flex min-h-0 flex-1 items-stretch gap-6 px-6 pb-8 md:px-16"
+          aria-label="Project list"
+        >
+          {projects.map((project, i) => (
+            <ProjectCard key={project.id} project={project} index={i} />
+          ))}
+          <div className="w-[10vw] shrink-0" aria-hidden="true" />
+        </div>
       </div>
-
-      {/* Edge fades — blend entry and exit into surrounding page */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 z-20 h-32"
-        style={{ background: 'linear-gradient(to bottom, var(--color-background), transparent)' }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-32"
-        style={{ background: 'linear-gradient(to top, var(--color-background), transparent)' }}
-      />
     </section>
   )
 }
