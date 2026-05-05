@@ -83,7 +83,7 @@ export function Work() {
           trigger: sectionRef.current,
           start: 'top top',
           end: () => `+=${totalWidth}`,
-          scrub: 0.8,
+          scrub: 1.2,
           pin: true,
           anticipatePin: 1,
         },
@@ -95,15 +95,6 @@ export function Work() {
 
   return (
     <section id="work" ref={sectionRef} className="relative">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-20"
-        style={{
-          backgroundImage: 'radial-gradient(circle, oklch(0.4 0 0 / 0.3) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-        }}
-      />
-
       {/* Section header — visible before pin starts */}
       <div className="relative z-10 px-6 pt-24 pb-12 md:px-16 lg:px-24">
         <p className="mb-2 font-mono text-xs text-accent">selected work</p>
@@ -120,6 +111,18 @@ export function Work() {
         {/* End spacer */}
         <div className="w-[10vw] shrink-0" aria-hidden="true" />
       </div>
+
+      {/* Edge fades — blend entry and exit into surrounding page */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 z-20 h-32"
+        style={{ background: 'linear-gradient(to bottom, var(--color-background), transparent)' }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-32"
+        style={{ background: 'linear-gradient(to top, var(--color-background), transparent)' }}
+      />
     </section>
   )
 }
