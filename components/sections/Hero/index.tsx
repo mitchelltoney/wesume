@@ -1,11 +1,17 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import dynamic from 'next/dynamic'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { siteData } from '@/lib/data'
 
 gsap.registerPlugin(ScrollTrigger)
+
+// Code-split: 3D bundle only loads once the hero is mounted
+const HeroCanvas = dynamic(() => import('./HeroCanvas').then((m) => ({ default: m.HeroCanvas })), {
+  ssr: false,
+})
 
 const [firstName, lastName] = siteData.name.split(' ')
 
@@ -14,45 +20,42 @@ export function Hero() {
   const nameRef = useRef<HTMLDivElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
   const scrollHintRef = useRef<HTMLDivElement>(null)
-  const grainRef = useRef<HTMLDivElement>(null)
+  // Shared scroll progress ref passed into the 3D canvas via stable ref (no re-renders)
+  const scrollProgressRef = useRef(0)
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReduced) return
+
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      scrollProgressRef.current = max > 0 ? window.scrollY / max : 0
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    if (prefersReduced) return () => window.removeEventListener('scroll', onScroll)
 
     const ctx = gsap.context(() => {
-      // Initial reveal: stagger name letters
       const letters = nameRef.current?.querySelectorAll('.hero-letter')
       if (letters) {
         gsap.fromTo(
           letters,
           { y: '110%', opacity: 0 },
-          {
-            y: '0%',
-            opacity: 1,
-            duration: 1.1,
-            stagger: 0.04,
-            ease: 'expo.out',
-            delay: 0.1,
-          }
+          { y: '0%', opacity: 1, duration: 1.1, stagger: 0.04, ease: 'expo.out', delay: 0.1 }
         )
       }
 
-      // Tagline fades in after name
       gsap.fromTo(
         taglineRef.current,
         { opacity: 0, y: 16 },
         { opacity: 1, y: 0, duration: 0.8, delay: 0.8, ease: 'power3.out' }
       )
 
-      // Scroll hint fades in last
       gsap.fromTo(
         scrollHintRef.current,
         { opacity: 0 },
         { opacity: 1, duration: 0.6, delay: 1.4, ease: 'power2.out' }
       )
 
-      // Scroll-driven: hero compresses as user scrolls
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: 'top top',
@@ -60,18 +63,16 @@ export function Hero() {
         scrub: true,
         onUpdate: (self) => {
           const p = self.progress
-          gsap.set(nameRef.current, {
-            scale: 1 - p * 0.15,
-            opacity: 1 - p * 0.8,
-          })
-          gsap.set(taglineRef.current, {
-            opacity: 1 - p * 2,
-          })
+          gsap.set(nameRef.current, { scale: 1 - p * 0.15, opacity: 1 - p * 0.8 })
+          gsap.set(taglineRef.current, { opacity: 1 - p * 2 })
         },
       })
     }, sectionRef)
 
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      window.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
   return (
@@ -80,32 +81,33 @@ export function Hero() {
       ref={sectionRef}
       className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden"
     >
-      {/* Dot grid motif */}
+      {/* 3D background — lazy loaded, code-split */}
+      <HeroCanvas scrollRef={scrollProgressRef} />
+
+      {/* Dot grid over canvas */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage: 'radial-gradient(circle, oklch(0.4 0 0 / 0.35) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(circle, oklch(0.4 0 0 / 0.3) 1px, transparent 1px)',
           backgroundSize: '32px 32px',
         }}
       />
 
-      {/* Grain overlay */}
+      {/* Vignette so text stays readable over canvas */}
       <div
-        ref={grainRef}
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.035]"
+        className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+          background:
+            'radial-gradient(ellipse 70% 60% at 50% 50%, oklch(0.08 0 0 / 0.6) 0%, transparent 100%)',
         }}
       />
 
       <div className="relative z-10 flex flex-col items-center gap-8 px-6 text-center">
-        {/* Name */}
-        <div ref={nameRef} aria-label={siteData.name} className="overflow-hidden">
+        <div ref={nameRef} aria-label={siteData.name}>
           <div className="flex flex-wrap justify-center leading-none">
-            {/* First name */}
-            <div className="flex">
+            <div className="flex overflow-hidden">
               {firstName.split('').map((char, i) => (
                 <span
                   key={i}
@@ -115,10 +117,8 @@ export function Hero() {
                 </span>
               ))}
             </div>
-            {/* Thin space between names on large screens */}
-            <span className="hero-letter w-[0.25em] inline-block" aria-hidden="true" />
-            {/* Last name — rendered in accent on last letter for a touch of character */}
-            <div className="flex">
+            <span className="hero-letter inline-block w-[0.25em]" aria-hidden="true" />
+            <div className="flex overflow-hidden">
               {lastName.split('').map((char, i) => (
                 <span
                   key={i}
@@ -133,7 +133,6 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Tagline */}
         <p
           ref={taglineRef}
           className="max-w-md font-mono text-sm text-muted opacity-0 md:text-base"
@@ -142,7 +141,6 @@ export function Hero() {
         </p>
       </div>
 
-      {/* Scroll hint */}
       <div
         ref={scrollHintRef}
         aria-hidden="true"

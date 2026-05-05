@@ -61,9 +61,7 @@ function VisualState({ state }: { state: string }) {
             <div
               key={i}
               className="h-3 w-3 rounded-sm"
-              style={{
-                backgroundColor: `oklch(0.84 0.22 142 / ${NOKIA_GRID[i]})`,
-              }}
+              style={{ backgroundColor: `oklch(0.84 0.22 142 / ${NOKIA_GRID[i]})` }}
             />
           ))}
         </div>
@@ -97,25 +95,22 @@ function VisualState({ state }: { state: string }) {
 
 export function Premise() {
   const sectionRef = useRef<HTMLElement>(null)
-  const textRef = useRef<HTMLDivElement>(null)
   const [activeState, setActiveState] = useState(0)
-  const [visibleText, setVisibleText] = useState(0)
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
     const ctx = gsap.context(() => {
+      // No GSAP pin — CSS sticky handles that. We just track scroll progress.
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: false,
         onUpdate: (self) => {
-          const idx = Math.min(STATES.length - 1, Math.floor(self.progress * STATES.length))
+          // Map progress 0→1 across 3 states, but clamp so the last state
+          // doesn't immediately snap away when the section starts to leave.
+          const raw = self.progress * STATES.length
+          const idx = Math.min(STATES.length - 1, Math.floor(raw))
           setActiveState(idx)
-          setVisibleText(idx)
         },
-        pin: !prefersReduced && window.innerWidth >= 768,
       })
     }, sectionRef)
 
@@ -123,38 +118,59 @@ export function Premise() {
   }, [])
 
   return (
-    <section id="premise" ref={sectionRef} style={{ height: '300vh' }} className="relative">
-      <div className="sticky top-0 flex min-h-screen flex-col md:flex-row">
+    <section
+      id="premise"
+      ref={sectionRef}
+      // 300vh gives us 3 "pages" of scroll distance for 3 states
+      style={{ height: '300vh' }}
+      className="relative"
+    >
+      {/* Sticky viewport — pinned with CSS, no GSAP conflict */}
+      <div className="sticky top-0 flex h-screen flex-col overflow-hidden md:flex-row">
         {/* Text side */}
-        <div
-          ref={textRef}
-          className="flex flex-1 flex-col justify-center px-8 py-16 md:px-16 lg:px-24"
-        >
-          {STATES.map((state, i) => (
-            <div
-              key={i}
-              className={`transition-all duration-700 ${
-                visibleText === i
-                  ? 'opacity-100 translate-y-0'
-                  : 'pointer-events-none absolute opacity-0'
-              }`}
-              aria-hidden={visibleText !== i}
-            >
-              <p className="mb-2 font-mono text-xs text-accent">{state.sublabel}</p>
-              <h2 className="mb-6 font-display text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-foreground">
-                {state.label}
-              </h2>
-              <p className="max-w-prose font-sans text-base leading-relaxed text-muted md:text-lg">
-                {state.description}
-              </p>
-            </div>
-          ))}
+        <div className="relative flex flex-1 flex-col justify-center px-8 py-16 md:px-16 lg:px-24">
+          {/* All states stacked via absolute positioning so none affect layout */}
+          <div className="relative h-64">
+            {STATES.map((state, i) => (
+              <div
+                key={i}
+                aria-hidden={activeState !== i}
+                className="absolute inset-0 flex flex-col justify-center transition-all duration-600"
+                style={{
+                  opacity: activeState === i ? 1 : 0,
+                  transform: `translateY(${activeState === i ? 0 : activeState > i ? -24 : 24}px)`,
+                  pointerEvents: activeState === i ? 'auto' : 'none',
+                }}
+              >
+                <p className="mb-2 font-mono text-xs text-accent">{state.sublabel}</p>
+                <h2 className="mb-4 font-display text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-foreground">
+                  {state.label}
+                </h2>
+                <p className="max-w-prose font-sans text-base leading-relaxed text-muted md:text-lg">
+                  {state.description}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Visual side */}
         <div className="flex flex-1 items-center justify-center border-l border-white/[0.06] bg-black/20 px-8">
-          <div className="transition-all duration-700">
-            <VisualState state={STATES[activeState].visual} />
+          <div className="relative h-48 w-full max-w-xs">
+            {STATES.map((state, i) => (
+              <div
+                key={i}
+                aria-hidden={activeState !== i}
+                className="absolute inset-0 flex items-center justify-center transition-all duration-600"
+                style={{
+                  opacity: activeState === i ? 1 : 0,
+                  transform: `scale(${activeState === i ? 1 : 0.92})`,
+                  pointerEvents: activeState === i ? 'auto' : 'none',
+                }}
+              >
+                <VisualState state={state.visual} />
+              </div>
+            ))}
           </div>
         </div>
 
@@ -166,9 +182,11 @@ export function Premise() {
           {STATES.map((_, i) => (
             <div
               key={i}
-              className={`h-1 w-1 rounded-full transition-all duration-300 ${
-                i === activeState ? 'bg-accent scale-150' : 'bg-white/20'
-              }`}
+              className="h-1 w-1 rounded-full transition-all duration-300"
+              style={{
+                backgroundColor: i === activeState ? 'oklch(0.84 0.22 142)' : 'oklch(1 0 0 / 0.2)',
+                transform: i === activeState ? 'scale(1.6)' : 'scale(1)',
+              }}
             />
           ))}
         </div>
