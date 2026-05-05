@@ -80,16 +80,6 @@ export function Hero() {
       {/* 3D background — lazy loaded, code-split */}
       <HeroCanvas scrollRef={scrollProgressRef} />
 
-      {/* Dot grid over canvas */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage: 'radial-gradient(circle, oklch(0.4 0 0 / 0.3) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-        }}
-      />
-
       {/* Vignette so text stays readable over canvas */}
       <div
         aria-hidden="true"
@@ -113,8 +103,8 @@ export function Hero() {
                 </span>
               ))}
             </div>
-            <span className="hero-letter inline-block w-[0.25em]" aria-hidden="true" />
-            <div className="flex overflow-hidden">
+            <span className="hero-letter inline-block w-[0.5em]" aria-hidden="true" />
+            <div className="flex overflow-visible">
               {lastName.split('').map((char, i) => (
                 <span
                   key={i}

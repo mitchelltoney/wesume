@@ -155,16 +155,6 @@ export function Trajectory() {
 
   return (
     <section id="trajectory" ref={sectionRef} className="relative px-6 py-24 md:px-16 lg:px-24">
-      {/* Dot grid motif — carried through */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: 'radial-gradient(circle, oklch(0.4 0 0 / 0.3) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-        }}
-      />
-
       <div className="relative z-10 mx-auto max-w-4xl">
         <p className="mb-2 font-mono text-xs text-accent">arc</p>
         <h2 className="mb-16 font-display text-[clamp(2.5rem,6vw,4rem)] font-bold text-foreground">

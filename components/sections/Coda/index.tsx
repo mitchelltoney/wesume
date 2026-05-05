@@ -87,17 +87,6 @@ export function Coda() {
       ref={sectionRef}
       className="relative flex min-h-[80vh] flex-col items-start justify-center overflow-hidden px-6 py-24 md:px-16 lg:px-24"
     >
-      {/* Dot grid motif — resolving */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle, oklch(0.72 0.19 225 / 0.12) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-        }}
-      />
-
       {/* Gradient that fades the grid toward center — motif resolution */}
       <div
         aria-hidden="true"

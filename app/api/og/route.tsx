@@ -38,7 +38,7 @@ export async function GET() {
           style={{
             fontFamily: 'monospace',
             fontSize: '18px',
-            color: '#a3e635',
+            color: '#60a5fa',
             margin: 0,
             letterSpacing: '0.05em',
           }}
