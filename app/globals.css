@@ -1,0 +1,111 @@
+@import 'tailwindcss';
+
+/* ─── Design tokens ─────────────────────────────────────────── */
+@theme inline {
+  /* Typography */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), 'Courier New', monospace;
+
+  /* Accent: acid green */
+  --color-accent: oklch(0.84 0.22 142);
+
+  /* Dark mode base (default) */
+  --color-background: oklch(0.08 0 0);
+  --color-foreground: oklch(0.94 0.01 75);
+  --color-muted: oklch(0.6 0.01 75);
+  --color-surface: oklch(0.11 0 0);
+  --color-border: oklch(0.2 0 0);
+}
+
+/* ─── Light mode ────────────────────────────────────────────── */
+.light {
+  --color-background: oklch(0.97 0.005 80);
+  --color-foreground: oklch(0.12 0.01 75);
+  --color-muted: oklch(0.45 0.01 75);
+  --color-surface: oklch(0.93 0.005 80);
+  --color-border: oklch(0.8 0.005 80);
+  --color-accent: oklch(0.55 0.22 142);
+}
+
+/* ─── Base ──────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Focus ring ────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ─── Selection ─────────────────────────────────────────────── */
+::selection {
+  background: color-mix(in oklch, var(--color-accent) 30%, transparent);
+  color: var(--color-foreground);
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklch, var(--color-accent) 40%, transparent);
+  border-radius: 2px;
+}
+
+/* ─── Lenis ─────────────────────────────────────────────────── */
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+/* ─── Utility classes not in Tailwind ───────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+}
+.bg-background {
+  background-color: var(--color-background);
+}
+.bg-surface {
+  background-color: var(--color-surface);
+}
+.text-foreground {
+  color: var(--color-foreground);
+}
+.text-muted {
+  color: var(--color-muted);
+}
+.text-accent {
+  color: var(--color-accent);
+}
+.border-accent {
+  border-color: var(--color-accent);
+}
