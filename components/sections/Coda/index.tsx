@@ -79,7 +79,7 @@ export function Coda() {
     return () => ctx.revert()
   }, [])
 
-  const heading = "Let's build something."
+  const heading = 'Make something worth making.'
 
   return (
     <section

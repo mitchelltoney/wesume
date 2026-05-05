@@ -4,11 +4,11 @@ export const siteData = {
   location: 'Orange County, CA',
   relocating: 'San Diego, CA — Fall 2026',
   email: 'mitchjt97@gmail.com',
-  github: 'https://github.com/[OWNER]',
+  github: 'https://github.com/mitchelltoney',
   linkedin: 'https://linkedin.com/in/[OWNER]',
   resumePdf: '/resume.pdf',
   description:
-    'Systems-leaning software engineer with a taste for low-level work, machine learning, and the occasional bioinformatics rabbit hole. Headed to UCSD for an M.S. in CS.',
+    'Systems-leaning software engineer. Spent time at Nokia teaching network packets to behave. Headed to UCSD for an M.S. in CS, presumably to do harder problems.',
 } as const
 
 export const techStack = [
@@ -71,10 +71,10 @@ export const domainLabels: Record<TechDomain, string> = {
 }
 
 export const interests = [
-  { label: 'Orbital Mechanics', detail: 'Kerbal Space Program is a documentary.' },
-  { label: 'Japanese', detail: 'WaniKani. Slowly. Very slowly.' },
-  { label: 'FPS / Hero Shooters', detail: 'Marvel Rivals, OW2, Deadlock. For research.' },
-  { label: 'Strength Training', detail: 'Consistent enough to mention it.' },
-  { label: 'Skincare', detail: 'SPF is not optional.' },
-  { label: 'AI Forecasting', detail: "Who's getting P(doom) right?" },
+  { label: 'Orbital Mechanics', detail: 'KSP is a documentary. The Δv math is not optional.' },
+  { label: 'Japanese', detail: 'WaniKani. Level unknown. Humility: high.' },
+  { label: 'FPS / Hero Shooters', detail: 'Marvel Rivals, OW2, Deadlock. Calling it research.' },
+  { label: 'Strength Training', detail: 'Shows up. Does the work. Mentions it once.' },
+  { label: 'Skincare', detail: 'SPF every morning. Non-negotiable.' },
+  { label: 'AI Forecasting', detail: 'Watching the P(doom) bets closely.' },
 ] as const

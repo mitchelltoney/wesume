@@ -23,9 +23,9 @@ const milestones: Milestone[] = [
     org: 'Chapman University',
     location: 'Orange, CA',
     bullets: [
-      'Systems programming focus',
-      'ML coursework — ensemble methods, model evaluation',
-      'Bioinformatics research',
+      'Systems programming — the part where you have to actually think about memory',
+      'ML coursework: ensemble methods, evaluation pipelines, learning what accuracy alone does not tell you',
+      'Bioinformatics research — graphs, proteins, AlphaFold',
     ],
     type: 'edu',
   },

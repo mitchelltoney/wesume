@@ -11,21 +11,21 @@ const STATES = [
     label: 'Orange County, CA',
     sublabel: 'Where it started',
     description:
-      'Grew up in OC. Studied software engineering at Chapman. Built things with C++ and learned how computers actually work — not just how to type code.',
+      'Grew up in OC. Studied software engineering at Chapman. Learned C++, learned how memory works, and learned that most software abstracts away the interesting parts.',
     visual: 'oc',
   },
   {
     label: 'Sunnyvale, CA',
     sublabel: 'Nokia Co-op',
     description:
-      "Spent a season in the Bay working on embedded network systems. Packet pipelines. Race conditions. The kind of bugs that don't surface until 3am on a production box.",
+      'Spent a season in the Bay writing embedded network tooling. Packet pipelines, mutex discipline, the occasional race condition that only manifests under production load at 2am. Good times.',
     visual: 'nokia',
   },
   {
     label: 'La Jolla, CA',
-    sublabel: 'UC San Diego — next stop',
+    sublabel: 'UC San Diego — Fall 2026',
     description:
-      'M.S. Computer Science, Fall 2026. The thread: from how hardware thinks to how software learns to how systems evolve at scale.',
+      'M.S. Computer Science. The plan: go deeper. The backup plan: still go deeper, just with a better view of the ocean.',
     visual: 'ucsd',
   },
 ]

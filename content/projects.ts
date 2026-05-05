@@ -17,9 +17,9 @@ export const projects: Project[] = [
     year: 2024,
     role: 'Solo developer',
     description:
-      'A data-driven tool that recommends optimal counter-picks in Brawl Stars based on current meta matchup data. Scraped, cleaned, and modeled win-rate relationships across the brawler roster to surface actionable picks in real time.',
+      'A data-driven tool that recommends optimal counter-picks in Brawl Stars based on current meta matchup data. Scraped win-rate relationships across the brawler roster and surfaced actionable picks in real time. The tool is correct. Whether players follow its advice is a separate problem.',
     tags: ['Python', 'Data Modeling', 'Web Scraping'],
-    repo: '[OWNER: add repo URL]',
+    repo: 'https://github.com/mitchelltoney',
   },
   {
     id: 'protein-network',
@@ -27,27 +27,26 @@ export const projects: Project[] = [
     year: 2024,
     role: 'Researcher',
     description:
-      'Applied AlphaFold-predicted structures and Cytoscape network analysis to map functional relationships between proteins. Identified candidate interaction hubs using graph centrality metrics.',
+      'Applied AlphaFold-predicted structures and Cytoscape network analysis to map functional relationships between proteins. Identified candidate interaction hubs using graph centrality metrics. Biology turned out to have surprisingly good graph problems.',
     tags: ['Bioinformatics', 'AlphaFold', 'Cytoscape', 'Python'],
-    repo: '[OWNER: add repo URL or remove]',
   },
   {
-    id: 'ml-classifier',
-    title: '[OWNER: project name]',
-    year: 2023,
-    role: 'Solo developer',
+    id: 'placeholder-3',
+    title: 'Coming soon',
+    year: 2025,
+    role: 'TBD',
     description:
-      '[OWNER: 1–2 sentence description. Suggested angle: ensemble methods or evaluation metrics work from coursework/research]',
-    tags: ['scikit-learn', 'Python', 'ML'],
-    repo: '[OWNER: add repo URL]',
+      'This slot is reserved for a project description that will be here shortly. The project exists. The write-up is pending. These things happen.',
+    tags: ['TBD'],
   },
   {
     id: 'placeholder-4',
-    title: '[OWNER: project name]',
-    year: 2023,
-    role: '[OWNER: role]',
-    description: '[OWNER: description]',
-    tags: ['[OWNER: tags]'],
-    repo: '[OWNER: add repo URL]',
+    title: 'Also coming soon',
+    year: 2024,
+    role: 'TBD',
+    description:
+      'Another placeholder. Four projects felt like the right number. Two real, two imminent. Check GitHub in the meantime.',
+    tags: ['TBD'],
+    repo: 'https://github.com/mitchelltoney',
   },
 ]
